@@ -16,6 +16,28 @@ export function totalSpend(txns: Transaction[]): number {
   return txns.reduce((sum, t) => (t.amount < 0 ? sum - t.amount : sum), 0);
 }
 
+export interface CashFlowSummary {
+  income: number;
+  spend: number;
+  net: number;
+  savingsRate: number;
+  transactionCount: number;
+}
+
+/** Income, spend, net, and savings rate over a transaction set. */
+export function cashFlowSummary(txns: Transaction[]): CashFlowSummary {
+  const income = totalIncome(txns);
+  const spend = totalSpend(txns);
+  const net = income - spend;
+  return {
+    income,
+    spend,
+    net,
+    savingsRate: income === 0 ? 0 : net / income,
+    transactionCount: txns.length,
+  };
+}
+
 /** Group transactions by YYYY-MM and return monthly income/spend/net. */
 export function monthlyTotals(txns: Transaction[]): Array<{
   month: string;

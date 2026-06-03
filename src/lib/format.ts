@@ -23,6 +23,14 @@ export function formatCurrencyCompact(amount: number): string {
   return `${sign}$${(abs / 1_000_000).toFixed(2)}m`;
 }
 
+/** Decimal ratio → "42%". */
+export function formatPercent(value: number, maximumFractionDigits = 0): string {
+  return value.toLocaleString("en-US", {
+    style: "percent",
+    maximumFractionDigits,
+  });
+}
+
 /** YYYY-MM-DD → "May 15". */
 export function formatDateShort(isoDate: string): string {
   const d = new Date(isoDate + "T12:00:00");

@@ -58,11 +58,11 @@ export function SpendingChart({ data }: { data: Point[] }) {
               fontSize: 12,
               color: "#eaeaf0",
             }}
-            formatter={(value: number, name: string) => [
-              formatCurrencyCompact(value),
+            formatter={(value, name) => [
+              formatCurrencyCompact(Number(value ?? 0)),
               name === "income" ? "Income" : "Spend",
             ]}
-            labelFormatter={(m: string) => formatMonth(m)}
+            labelFormatter={(label) => formatMonth(String(label))}
           />
           <Area
             type="monotone"

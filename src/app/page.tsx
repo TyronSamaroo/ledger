@@ -3,30 +3,27 @@ import { SpendingChart } from "@/components/SpendingChart";
 import { TransactionsTable } from "@/components/TransactionsTable";
 import { accounts, categories, transactions } from "@/lib/data";
 import {
+  cashFlowSummary,
   inMonth,
   latestMonth,
   monthlyTotals,
   netWorth,
   spendByCategory,
-  totalIncome,
-  totalSpend,
 } from "@/lib/aggregate";
-import { formatCurrency, formatCurrencyCompact, formatMonth } from "@/lib/format";
+import { formatCurrency, formatCurrencyCompact, formatMonth, formatPercent } from "@/lib/format";
 
 export default function DashboardPage() {
   const thisMonth = latestMonth(transactions);
   const monthTxns = inMonth(transactions, thisMonth);
   const monthly = monthlyTotals(transactions);
   const cats = spendByCategory(monthTxns, categories);
+  const cashFlow = cashFlowSummary(monthTxns);
 
-  const incomeMTD = totalIncome(monthTxns);
-  const spendMTD = totalSpend(monthTxns);
-  const netMTD = incomeMTD - spendMTD;
   const nw = netWorth(accounts);
 
   const prevIdx = monthly.findIndex((m) => m.month === thisMonth) - 1;
   const prev = prevIdx >= 0 ? monthly[prevIdx] : null;
-  const spendDelta = prev ? spendMTD - prev.spend : 0;
+  const spendDelta = prev ? cashFlow.spend - prev.spend : 0;
   const spendTone = spendDelta > 0 ? "negative" : spendDelta < 0 ? "positive" : "neutral";
 
   return (
@@ -36,7 +33,7 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-semibold tracking-tight mt-1">Dashboard</h1>
       </header>
 
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <StatCard
           label="Net worth"
           value={formatCurrencyCompact(nw)}
@@ -44,12 +41,12 @@ export default function DashboardPage() {
         />
         <StatCard
           label="Income (MTD)"
-          value={formatCurrency(incomeMTD)}
+          value={formatCurrency(cashFlow.income)}
           tone="positive"
         />
         <StatCard
           label="Spend (MTD)"
-          value={formatCurrency(spendMTD)}
+          value={formatCurrency(cashFlow.spend)}
           delta={
             prev
               ? `${spendDelta >= 0 ? "+" : "−"}${formatCurrency(Math.abs(spendDelta))} vs last month`
@@ -59,8 +56,14 @@ export default function DashboardPage() {
         />
         <StatCard
           label="Net (MTD)"
-          value={formatCurrency(netMTD, true)}
-          tone={netMTD >= 0 ? "positive" : "negative"}
+          value={formatCurrency(cashFlow.net, true)}
+          tone={cashFlow.net >= 0 ? "positive" : "negative"}
+        />
+        <StatCard
+          label="Savings rate"
+          value={formatPercent(cashFlow.savingsRate)}
+          hint={`${cashFlow.transactionCount} txns`}
+          tone={cashFlow.savingsRate >= 0 ? "positive" : "negative"}
         />
       </section>
 

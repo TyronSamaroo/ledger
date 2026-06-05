@@ -15,6 +15,10 @@ export interface Account {
   apy?: number;
   /** Monthly automatic contribution or payoff target. */
   monthlyTarget?: number;
+  /** Friendly display label for dense account lists. */
+  nickname?: string;
+  /** ISO date string for demo account age calculations. */
+  openedAt?: string;
 }
 
 export type CategoryKind = "income" | "expense";

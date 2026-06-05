@@ -91,6 +91,26 @@ export default function AccountsPage() {
                 </span>
                 <span className="text-xs text-muted">Available</span>
               </div>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] text-muted">
+                {a.creditLimit && (
+                  <div className="rounded-md bg-elevated px-2 py-1.5">
+                    <span>Limit </span>
+                    <span className="text-text">{formatCurrency(a.creditLimit)}</span>
+                  </div>
+                )}
+                {a.apy && (
+                  <div className="rounded-md bg-elevated px-2 py-1.5">
+                    <span>APY </span>
+                    <span className="text-text">{formatPercent(a.apy, 1)}</span>
+                  </div>
+                )}
+                {a.monthlyTarget && (
+                  <div className="rounded-md bg-elevated px-2 py-1.5">
+                    <span>Target </span>
+                    <span className="text-text">{formatCurrency(a.monthlyTarget)}</span>
+                  </div>
+                )}
+              </div>
             </Card>
           );
         })}

@@ -1,7 +1,7 @@
 import { Card, CardHeader, Badge } from "@/components/Card";
 import { accounts } from "@/lib/data";
-import { netWorth } from "@/lib/aggregate";
-import { formatCurrency, formatCurrencyCompact } from "@/lib/format";
+import { accountSummary } from "@/lib/aggregate";
+import { formatCurrency, formatCurrencyCompact, formatPercent } from "@/lib/format";
 import {
   Wallet,
   PiggyBank,
@@ -26,9 +26,7 @@ const TYPE_LABEL: Record<AccountType, string> = {
 };
 
 export default function AccountsPage() {
-  const nw = netWorth(accounts);
-  const assets = accounts.filter((a) => a.balance >= 0).reduce((s, a) => s + a.balance, 0);
-  const debts = accounts.filter((a) => a.balance < 0).reduce((s, a) => s - a.balance, 0);
+  const summary = accountSummary(accounts);
 
   return (
     <div className="space-y-6">
@@ -41,11 +39,25 @@ export default function AccountsPage() {
         <CardHeader title="Net worth" subtitle="Assets minus debts" />
         <div className="flex items-baseline gap-3">
           <span className="text-3xl font-semibold tabular-nums">
-            {formatCurrencyCompact(nw)}
+            {formatCurrencyCompact(summary.netWorth)}
           </span>
           <span className="text-xs text-muted">
-            {formatCurrency(assets)} assets · {formatCurrency(debts)} debt
+            {formatCurrency(summary.assets)} assets · {formatCurrency(summary.debts)} debt
           </span>
+        </div>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div className="rounded-lg bg-elevated p-3">
+            <p className="text-muted">Credit utilization</p>
+            <p className="mt-1 text-sm font-medium text-text">
+              {formatPercent(summary.creditUtilization)}
+            </p>
+          </div>
+          <div className="rounded-lg bg-elevated p-3">
+            <p className="text-muted">Monthly targets</p>
+            <p className="mt-1 text-sm font-medium text-text">
+              {formatCurrency(summary.monthlyTargets)}
+            </p>
+          </div>
         </div>
       </Card>
 

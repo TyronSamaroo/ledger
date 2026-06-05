@@ -9,6 +9,12 @@ export interface Account {
   /** Last 4 digits, purely cosmetic. */
   last4: string;
   institution: string;
+  /** Optional demo-only credit limit for utilization math. */
+  creditLimit?: number;
+  /** Optional annual percentage yield for cash accounts. */
+  apy?: number;
+  /** Monthly automatic contribution or payoff target. */
+  monthlyTarget?: number;
 }
 
 export type CategoryKind = "income" | "expense";

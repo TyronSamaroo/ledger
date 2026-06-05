@@ -5,10 +5,44 @@ import type { Account, Budget, Category, Transaction } from "./types";
 // ──────────────────────────────────────────────────────────────────────────────
 
 export const accounts: Account[] = [
-  { id: "acc_checking", name: "Everyday Checking", type: "checking", balance: 4_812.46, last4: "4421", institution: "Aspen Bank" },
-  { id: "acc_savings", name: "Emergency Savings", type: "savings", balance: 18_204.0, last4: "9876", institution: "Aspen Bank" },
-  { id: "acc_credit", name: "Travel Rewards Card", type: "credit", balance: -1_276.18, last4: "0312", institution: "Northpeak" },
-  { id: "acc_invest", name: "Brokerage", type: "investment", balance: 42_915.7, last4: "7733", institution: "Tidepool Securities" },
+  {
+    id: "acc_checking",
+    name: "Everyday Checking",
+    type: "checking",
+    balance: 4_812.46,
+    last4: "4421",
+    institution: "Aspen Bank",
+    monthlyTarget: 1_250,
+  },
+  {
+    id: "acc_savings",
+    name: "Emergency Savings",
+    type: "savings",
+    balance: 18_204.0,
+    last4: "9876",
+    institution: "Aspen Bank",
+    apy: 0.043,
+    monthlyTarget: 600,
+  },
+  {
+    id: "acc_credit",
+    name: "Travel Rewards Card",
+    type: "credit",
+    balance: -1_276.18,
+    last4: "0312",
+    institution: "Northpeak",
+    creditLimit: 8_500,
+    monthlyTarget: 850,
+  },
+  {
+    id: "acc_invest",
+    name: "Brokerage",
+    type: "investment",
+    balance: 42_915.7,
+    last4: "7733",
+    institution: "Tidepool Securities",
+    monthlyTarget: 900,
+  },
 ];
 
 // ──────────────────────────────────────────────────────────────────────────────

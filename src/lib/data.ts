@@ -13,6 +13,8 @@ export const accounts: Account[] = [
     last4: "4421",
     institution: "Aspen Bank",
     monthlyTarget: 1_250,
+    nickname: "Bills hub",
+    openedAt: "2021-03-14",
   },
   {
     id: "acc_savings",
@@ -23,6 +25,8 @@ export const accounts: Account[] = [
     institution: "Aspen Bank",
     apy: 0.043,
     monthlyTarget: 600,
+    nickname: "Safety net",
+    openedAt: "2020-09-02",
   },
   {
     id: "acc_credit",
@@ -33,6 +37,8 @@ export const accounts: Account[] = [
     institution: "Northpeak",
     creditLimit: 8_500,
     monthlyTarget: 850,
+    nickname: "Travel card",
+    openedAt: "2022-06-18",
   },
   {
     id: "acc_invest",
@@ -42,6 +48,8 @@ export const accounts: Account[] = [
     last4: "7733",
     institution: "Tidepool Securities",
     monthlyTarget: 900,
+    nickname: "Long-term",
+    openedAt: "2019-11-21",
   },
 ];
 

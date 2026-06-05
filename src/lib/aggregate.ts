@@ -6,6 +6,34 @@ export function netWorth(accounts: Account[]): number {
   return accounts.reduce((sum, a) => sum + a.balance, 0);
 }
 
+export interface AccountSummary {
+  assets: number;
+  debts: number;
+  netWorth: number;
+  creditLimit: number;
+  creditUsed: number;
+  creditUtilization: number;
+  monthlyTargets: number;
+}
+
+/** Roll up account balances and optional planning metadata. */
+export function accountSummary(accounts: Account[]): AccountSummary {
+  const assets = accounts.filter((a) => a.balance >= 0).reduce((sum, a) => sum + a.balance, 0);
+  const debts = accounts.filter((a) => a.balance < 0).reduce((sum, a) => sum - a.balance, 0);
+  const creditLimit = accounts.reduce((sum, a) => sum + (a.creditLimit ?? 0), 0);
+  const monthlyTargets = accounts.reduce((sum, a) => sum + (a.monthlyTarget ?? 0), 0);
+
+  return {
+    assets,
+    debts,
+    netWorth: assets - debts,
+    creditLimit,
+    creditUsed: debts,
+    creditUtilization: creditLimit === 0 ? 0 : debts / creditLimit,
+    monthlyTargets,
+  };
+}
+
 /** Total income (positive amounts) over a transaction set. */
 export function totalIncome(txns: Transaction[]): number {
   return txns.reduce((sum, t) => (t.amount > 0 ? sum + t.amount : sum), 0);

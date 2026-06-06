@@ -33,6 +33,22 @@ export default function BudgetsPage() {
             style={{ width: `${Math.min(100, summary.utilization * 100)}%` }}
           />
         </div>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div className="rounded-lg bg-elevated p-3">
+            <p className="text-muted">Remaining</p>
+            <p className="mt-1 text-sm font-medium text-text">
+              {formatCurrency(summary.totalRemaining)}
+            </p>
+          </div>
+          <div className="rounded-lg bg-elevated p-3">
+            <p className="text-muted">Tight categories</p>
+            <p className="mt-1 text-sm font-medium text-text">{summary.tightCount}</p>
+          </div>
+          <div className="rounded-lg bg-elevated p-3">
+            <p className="text-muted">Over budget</p>
+            <p className="mt-1 text-sm font-medium text-text">{summary.overCount}</p>
+          </div>
+        </div>
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

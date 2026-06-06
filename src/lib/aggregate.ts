@@ -123,6 +123,14 @@ export interface BudgetProgress {
   ratio: number;
 }
 
+export type BudgetStatus = "on-track" | "tight" | "over";
+
+export function budgetStatus(ratio: number): BudgetStatus {
+  if (ratio > 1) return "over";
+  if (ratio > 0.85) return "tight";
+  return "on-track";
+}
+
 export function budgetProgress(
   budgets: Budget[],
   categories: Category[],

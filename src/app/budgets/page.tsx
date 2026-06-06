@@ -14,6 +14,7 @@ export default function BudgetsPage() {
   const monthTxns = inMonth(transactions, month);
   const progress = budgetProgress(budgets, categories, monthTxns);
   const summary = budgetSummary(progress);
+  const prioritized = [...progress].sort((a, b) => b.ratio - a.ratio);
 
   return (
     <div className="space-y-6">
@@ -52,7 +53,7 @@ export default function BudgetsPage() {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {progress.map(({ category, budget, spent, ratio }) => {
+        {prioritized.map(({ category, budget, spent, ratio }) => {
           const pct = Math.round(ratio * 100);
           const status = budgetStatus(ratio);
           const over = status === "over";

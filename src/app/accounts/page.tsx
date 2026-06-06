@@ -46,12 +46,13 @@ export default function AccountsPage() {
             {formatCurrency(summary.assets)} assets · {formatCurrency(summary.debts)} debt
           </span>
         </div>
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <MetricTile
             label="Credit utilization"
             value={formatPercent(summary.creditUtilization)}
             tone={summary.creditUtilization > 0.3 ? "negative" : "neutral"}
           />
+          <MetricTile label="Available credit" value={formatCurrency(summary.availableCredit)} />
           <MetricTile label="Monthly targets" value={formatCurrency(summary.monthlyTargets)} />
         </div>
       </Card>

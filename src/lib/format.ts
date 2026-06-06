@@ -43,6 +43,11 @@ export function formatDateLong(isoDate: string): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
+/** Human-friendly masked account suffix. */
+export function formatAccountMask(last4: string): string {
+  return `••${last4}`;
+}
+
 /** YYYY-MM-DD → "2026-05". */
 export function monthKey(isoDate: string): string {
   return isoDate.slice(0, 7);

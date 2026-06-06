@@ -1,5 +1,5 @@
 import type { Account, Category, Transaction } from "@/lib/types";
-import { formatCurrency, formatDateShort } from "@/lib/format";
+import { formatAccountMask, formatCurrency, formatDateShort } from "@/lib/format";
 import { Badge } from "./Card";
 
 export function TransactionsTable({
@@ -60,7 +60,7 @@ export function TransactionsTable({
                   )}
                 </td>
                 <td className="py-3 pr-4 text-muted hidden md:table-cell text-xs">
-                  {acc?.name} ··{acc?.last4}
+                  {acc && `${acc.name} ${formatAccountMask(acc.last4)}`}
                 </td>
                 <td
                   className={`py-3 pl-4 text-right font-medium tabular-nums ${

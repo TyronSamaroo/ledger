@@ -1,7 +1,7 @@
 import { Card, CardHeader, Badge, MetricTile } from "@/components/Card";
 import { accounts } from "@/lib/data";
 import { accountSummary, accountTypeTotals } from "@/lib/aggregate";
-import { formatCurrency, formatCurrencyCompact, formatPercent } from "@/lib/format";
+import { formatAccountMask, formatCurrency, formatCurrencyCompact, formatPercent } from "@/lib/format";
 import {
   Wallet,
   PiggyBank,
@@ -85,7 +85,7 @@ export default function AccountsPage() {
                   <div>
                     <p className="text-sm font-medium">{a.name}</p>
                     <p className="text-xs text-muted">
-                      {a.institution} ··{a.last4}
+                      {a.institution} {formatAccountMask(a.last4)}
                     </p>
                   </div>
                 </div>

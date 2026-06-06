@@ -2,6 +2,8 @@ import { Card, CardHeader, Badge } from "@/components/Card";
 import { budgets, categories, transactions } from "@/lib/data";
 import {
   budgetProgress,
+  budgetStatus,
+  budgetSummary,
   inMonth,
   latestMonth,
 } from "@/lib/aggregate";
@@ -11,9 +13,7 @@ export default function BudgetsPage() {
   const month = latestMonth(transactions);
   const monthTxns = inMonth(transactions, month);
   const progress = budgetProgress(budgets, categories, monthTxns);
-
-  const totalCap = budgets.reduce((s, b) => s + b.monthly, 0);
-  const totalSpent = progress.reduce((s, p) => s + p.spent, 0);
+  const summary = budgetSummary(progress);
 
   return (
     <div className="space-y-6">
@@ -25,12 +25,12 @@ export default function BudgetsPage() {
       <Card>
         <CardHeader
           title="Overall"
-          subtitle={`${formatCurrency(totalSpent)} of ${formatCurrency(totalCap)} spent`}
+          subtitle={`${formatCurrency(summary.totalSpent)} of ${formatCurrency(summary.totalCap)} spent`}
         />
         <div className="h-2 rounded-full bg-elevated overflow-hidden">
           <div
             className="h-full rounded-full bg-accent"
-            style={{ width: `${Math.min(100, (totalSpent / totalCap) * 100)}%` }}
+            style={{ width: `${Math.min(100, summary.utilization * 100)}%` }}
           />
         </div>
       </Card>
@@ -38,10 +38,10 @@ export default function BudgetsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {progress.map(({ category, budget, spent, ratio }) => {
           const pct = Math.round(ratio * 100);
-          const over = ratio > 1;
-          const near = !over && ratio > 0.85;
-          const tone = over ? "negative" : near ? "warning" : "positive";
-          const label = over ? "Over" : near ? "Tight" : "On track";
+          const status = budgetStatus(ratio);
+          const over = status === "over";
+          const tone = over ? "negative" : status === "tight" ? "warning" : "positive";
+          const label = over ? "Over" : status === "tight" ? "Tight" : "On track";
           return (
             <Card key={budget.categoryId}>
               <div className="flex items-start justify-between mb-3">

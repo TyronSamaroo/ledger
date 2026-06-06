@@ -13,6 +13,7 @@ export interface AccountSummary {
   creditLimit: number;
   creditUsed: number;
   creditUtilization: number;
+  availableCredit: number;
   monthlyTargets: number;
 }
 
@@ -30,6 +31,7 @@ export function accountSummary(accounts: Account[]): AccountSummary {
     creditLimit,
     creditUsed: debts,
     creditUtilization: creditLimit === 0 ? 0 : debts / creditLimit,
+    availableCredit: Math.max(0, creditLimit - debts),
     monthlyTargets,
   };
 }

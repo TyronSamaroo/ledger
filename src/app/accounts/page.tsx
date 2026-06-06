@@ -1,6 +1,6 @@
 import { Card, CardHeader, Badge, MetricTile } from "@/components/Card";
 import { accounts } from "@/lib/data";
-import { accountSummary } from "@/lib/aggregate";
+import { accountSummary, accountTypeTotals } from "@/lib/aggregate";
 import { formatCurrency, formatCurrencyCompact, formatPercent } from "@/lib/format";
 import {
   Wallet,
@@ -27,6 +27,7 @@ const TYPE_LABEL: Record<AccountType, string> = {
 
 export default function AccountsPage() {
   const summary = accountSummary(accounts);
+  const typeTotals = accountTypeTotals(accounts);
 
   return (
     <div className="space-y-6">
@@ -52,6 +53,21 @@ export default function AccountsPage() {
             tone={summary.creditUtilization > 0.3 ? "negative" : "neutral"}
           />
           <MetricTile label="Monthly targets" value={formatCurrency(summary.monthlyTargets)} />
+        </div>
+      </Card>
+
+      <Card>
+        <CardHeader title="By account type" subtitle="Balance grouped by account role" />
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          {typeTotals.map((total) => (
+            <MetricTile
+              key={total.type}
+              label={TYPE_LABEL[total.type]}
+              value={formatCurrency(total.balance)}
+              hint={`${total.count} account${total.count === 1 ? "" : "s"}`}
+              tone={total.balance < 0 ? "negative" : "neutral"}
+            />
+          ))}
         </div>
       </Card>
 

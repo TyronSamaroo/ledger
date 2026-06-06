@@ -154,3 +154,25 @@ export function budgetProgress(
     })
     .filter((b): b is BudgetProgress => b !== null);
 }
+
+export interface BudgetSummary {
+  totalCap: number;
+  totalSpent: number;
+  totalRemaining: number;
+  utilization: number;
+  overCount: number;
+  tightCount: number;
+}
+
+export function budgetSummary(progress: BudgetProgress[]): BudgetSummary {
+  const totalCap = progress.reduce((sum, p) => sum + p.budget.monthly, 0);
+  const totalSpent = progress.reduce((sum, p) => sum + p.spent, 0);
+  return {
+    totalCap,
+    totalSpent,
+    totalRemaining: Math.max(0, totalCap - totalSpent),
+    utilization: totalCap === 0 ? 0 : totalSpent / totalCap,
+    overCount: progress.filter((p) => budgetStatus(p.ratio) === "over").length,
+    tightCount: progress.filter((p) => budgetStatus(p.ratio) === "tight").length,
+  };
+}

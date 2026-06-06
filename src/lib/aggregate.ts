@@ -34,6 +34,22 @@ export function accountSummary(accounts: Account[]): AccountSummary {
   };
 }
 
+export function accountTypeTotals(accounts: Account[]): Array<{
+  type: Account["type"];
+  balance: number;
+  count: number;
+}> {
+  const buckets = new Map<Account["type"], { balance: number; count: number }>();
+  for (const account of accounts) {
+    const current = buckets.get(account.type) ?? { balance: 0, count: 0 };
+    current.balance += account.balance;
+    current.count += 1;
+    buckets.set(account.type, current);
+  }
+
+  return [...buckets.entries()].map(([type, values]) => ({ type, ...values }));
+}
+
 /** Total income (positive amounts) over a transaction set. */
 export function totalIncome(txns: Transaction[]): number {
   return txns.reduce((sum, t) => (t.amount > 0 ? sum + t.amount : sum), 0);

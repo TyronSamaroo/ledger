@@ -1,5 +1,6 @@
 import type { Account, Category, Transaction } from "@/lib/types";
 import { formatCurrency, formatDateShort } from "@/lib/format";
+import { Badge } from "./Card";
 
 export function TransactionsTable({
   transactions,
@@ -41,7 +42,12 @@ export function TransactionsTable({
                 <td className="py-3 pr-4 text-muted whitespace-nowrap">
                   {formatDateShort(t.date)}
                 </td>
-                <td className="py-3 pr-4 text-text">{t.merchant}</td>
+                <td className="py-3 pr-4 text-text">
+                  <div className="flex items-center gap-2">
+                    <span>{t.merchant}</span>
+                    {t.pending && <Badge tone="warning">Pending</Badge>}
+                  </div>
+                </td>
                 <td className="py-3 pr-4">
                   {cat && (
                     <span className="inline-flex items-center gap-2 text-xs text-muted">

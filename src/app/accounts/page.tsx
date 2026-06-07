@@ -1,6 +1,12 @@
 import { Card, CardHeader, Badge, MetricTile } from "@/components/Card";
-import { accounts } from "@/lib/data";
-import { accountSummary, accountTypeTotals } from "@/lib/aggregate";
+import { accounts, transactions } from "@/lib/data";
+import {
+  accountActivity,
+  accountSummary,
+  accountTypeTotals,
+  inMonth,
+  latestMonth,
+} from "@/lib/aggregate";
 import { formatAccountMask, formatCurrency, formatCurrencyCompact, formatPercent } from "@/lib/format";
 import {
   Wallet,
@@ -28,6 +34,12 @@ const TYPE_LABEL: Record<AccountType, string> = {
 export default function AccountsPage() {
   const summary = accountSummary(accounts);
   const typeTotals = accountTypeTotals(accounts);
+  const activity = new Map(
+    accountActivity(inMonth(transactions, latestMonth(transactions))).map((item) => [
+      item.accountId,
+      item,
+    ])
+  );
 
   return (
     <div className="space-y-6">
@@ -76,6 +88,7 @@ export default function AccountsPage() {
         {accounts.map((a) => {
           const Icon = ICONS[a.type];
           const isDebt = a.balance < 0;
+          const accountStats = activity.get(a.id);
           return (
             <Card key={a.id}>
               <div className="flex items-start justify-between">
@@ -119,6 +132,12 @@ export default function AccountsPage() {
                   <div className="rounded-md bg-elevated px-2 py-1.5">
                     <span>Target </span>
                     <span className="text-text">{formatCurrency(a.monthlyTarget)}</span>
+                  </div>
+                )}
+                {accountStats && (
+                  <div className="rounded-md bg-elevated px-2 py-1.5">
+                    <span>Activity </span>
+                    <span className="text-text">{accountStats.count} txns</span>
                   </div>
                 )}
               </div>

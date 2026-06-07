@@ -7,7 +7,13 @@ import {
   inMonth,
   latestMonth,
 } from "@/lib/aggregate";
-import { formatAccountMask, formatCurrency, formatCurrencyCompact, formatPercent } from "@/lib/format";
+import {
+  formatAccountMask,
+  formatCurrency,
+  formatCurrencyCompact,
+  formatDateLong,
+  formatPercent,
+} from "@/lib/format";
 import {
   Wallet,
   PiggyBank,
@@ -98,6 +104,7 @@ export default function AccountsPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium">{a.name}</p>
+                    {a.nickname && <p className="text-xs text-accent">{a.nickname}</p>}
                     <p className="text-xs text-muted">
                       {a.institution} {formatAccountMask(a.last4)}
                     </p>
@@ -132,6 +139,12 @@ export default function AccountsPage() {
                   <div className="rounded-md bg-elevated px-2 py-1.5">
                     <span>Target </span>
                     <span className="text-text">{formatCurrency(a.monthlyTarget)}</span>
+                  </div>
+                )}
+                {a.openedAt && (
+                  <div className="rounded-md bg-elevated px-2 py-1.5">
+                    <span>Opened </span>
+                    <span className="text-text">{formatDateLong(a.openedAt)}</span>
                   </div>
                 )}
                 {accountStats && (

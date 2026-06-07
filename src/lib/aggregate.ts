@@ -102,6 +102,25 @@ export function spendByCategory(
     .sort((a, b) => b.amount - a.amount);
 }
 
+/** Spend grouped by merchant, highest absolute spend first. */
+export function merchantTotals(txns: Transaction[]): Array<{
+  merchant: string;
+  amount: number;
+  count: number;
+}> {
+  const buckets = new Map<string, { amount: number; count: number }>();
+  for (const t of txns) {
+    if (t.amount >= 0) continue;
+    const cur = buckets.get(t.merchant) ?? { amount: 0, count: 0 };
+    cur.amount += -t.amount;
+    cur.count += 1;
+    buckets.set(t.merchant, cur);
+  }
+  return [...buckets.entries()]
+    .map(([merchant, values]) => ({ merchant, ...values }))
+    .sort((a, b) => b.amount - a.amount);
+}
+
 /** Filter to a specific YYYY-MM. */
 export function inMonth(txns: Transaction[], key: string): Transaction[] {
   return txns.filter((t) => monthKey(t.date) === key);

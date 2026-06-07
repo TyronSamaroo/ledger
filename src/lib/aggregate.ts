@@ -180,6 +180,22 @@ export function transactionStats(txns: Transaction[]): TransactionStats {
   };
 }
 
+export function accountActivity(txns: Transaction[]): Array<{
+  accountId: string;
+  count: number;
+  net: number;
+}> {
+  const buckets = new Map<string, { count: number; net: number }>();
+  for (const txn of txns) {
+    const current = buckets.get(txn.accountId) ?? { count: 0, net: 0 };
+    current.count += 1;
+    current.net += txn.amount;
+    buckets.set(txn.accountId, current);
+  }
+
+  return [...buckets.entries()].map(([accountId, values]) => ({ accountId, ...values }));
+}
+
 export interface SpendForecast {
   elapsedDays: number;
   daysInMonth: number;

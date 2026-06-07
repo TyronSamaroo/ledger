@@ -247,7 +247,12 @@ function generateTransactions(): Transaction[] {
   }
 
   // Sort newest first so callers can slice the top N without re-sorting.
-  return out.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  return out
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+    .map((txn, index) => ({
+      ...txn,
+      pending: txn.amount < 0 && index < 8,
+    }));
 }
 
 export const transactions: Transaction[] = generateTransactions();

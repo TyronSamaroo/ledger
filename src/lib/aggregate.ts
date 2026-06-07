@@ -121,6 +121,23 @@ export function merchantTotals(txns: Transaction[]): Array<{
     .sort((a, b) => b.amount - a.amount);
 }
 
+export interface TransactionStats {
+  incomeCount: number;
+  spendCount: number;
+  pendingCount: number;
+  largestSpend: number;
+}
+
+export function transactionStats(txns: Transaction[]): TransactionStats {
+  const spend = txns.filter((t) => t.amount < 0);
+  return {
+    incomeCount: txns.filter((t) => t.amount > 0).length,
+    spendCount: spend.length,
+    pendingCount: txns.filter((t) => t.pending).length,
+    largestSpend: spend.reduce((max, t) => Math.max(max, -t.amount), 0),
+  };
+}
+
 /** Filter to a specific YYYY-MM. */
 export function inMonth(txns: Transaction[], key: string): Transaction[] {
   return txns.filter((t) => monthKey(t.date) === key);

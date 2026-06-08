@@ -80,8 +80,12 @@ export default function BudgetsPage() {
                   <p className="text-xs text-muted mt-0.5">
                     {formatCurrency(spent)} of {formatCurrency(budget.monthly)}
                   </p>
+                  {budget.note && <p className="text-[11px] text-muted mt-1">{budget.note}</p>}
                 </div>
-                <Badge tone={tone}>{label}</Badge>
+                <div className="flex flex-col items-end gap-1">
+                  <Badge tone={tone}>{label}</Badge>
+                  {budget.priority && <Badge>{budget.priority}</Badge>}
+                </div>
               </div>
               <div className="h-1.5 rounded-full bg-elevated overflow-hidden">
                 <div

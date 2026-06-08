@@ -8,6 +8,13 @@ import {
   latestMonth,
 } from "@/lib/aggregate";
 import { formatCurrency, formatMonth } from "@/lib/format";
+import type { Budget } from "@/lib/types";
+
+const PRIORITY_LABELS: Record<NonNullable<Budget["priority"]>, string> = {
+  fixed: "Fixed",
+  flex: "Flex",
+  watch: "Watch",
+};
 
 export default function BudgetsPage() {
   const month = latestMonth(transactions);
@@ -52,7 +59,7 @@ export default function BudgetsPage() {
           {priorityTotals.map((item) => (
             <MetricTile
               key={item.priority}
-              label={item.priority}
+              label={PRIORITY_LABELS[item.priority]}
               value={formatCurrency(item.monthly)}
               hint={`${formatCurrency(item.spent)} spent · ${item.count} categories`}
             />
@@ -84,7 +91,7 @@ export default function BudgetsPage() {
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <Badge tone={tone}>{label}</Badge>
-                  {budget.priority && <Badge>{budget.priority}</Badge>}
+                  {budget.priority && <Badge>{PRIORITY_LABELS[budget.priority]}</Badge>}
                 </div>
               </div>
               <div className="h-1.5 rounded-full bg-elevated overflow-hidden">

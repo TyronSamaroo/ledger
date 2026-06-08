@@ -138,6 +138,33 @@ export function transactionStats(txns: Transaction[]): TransactionStats {
   };
 }
 
+export interface SpendForecast {
+  elapsedDays: number;
+  daysInMonth: number;
+  actualSpend: number;
+  dailyAverage: number;
+  projectedSpend: number;
+}
+
+export function spendForecast(txns: Transaction[], key: string): SpendForecast {
+  const actualSpend = totalSpend(txns);
+  const [year, month] = key.split("-").map(Number);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const elapsedDays = Math.max(
+    1,
+    ...txns.map((t) => Number(t.date.slice(8, 10))).filter((day) => Number.isFinite(day))
+  );
+  const dailyAverage = actualSpend / elapsedDays;
+
+  return {
+    elapsedDays,
+    daysInMonth,
+    actualSpend,
+    dailyAverage,
+    projectedSpend: dailyAverage * daysInMonth,
+  };
+}
+
 /** Filter to a specific YYYY-MM. */
 export function inMonth(txns: Transaction[], key: string): Transaction[] {
   return txns.filter((t) => monthKey(t.date) === key);

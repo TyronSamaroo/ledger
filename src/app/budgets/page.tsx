@@ -2,6 +2,7 @@ import { Card, CardHeader, Badge, MetricTile } from "@/components/Card";
 import { budgets, categories, transactions } from "@/lib/data";
 import {
   budgetProgress,
+  budgetPriorityTotals,
   budgetSummary,
   inMonth,
   latestMonth,
@@ -14,6 +15,7 @@ export default function BudgetsPage() {
   const progress = budgetProgress(budgets, categories, monthTxns);
   const summary = budgetSummary(progress);
   const prioritized = [...progress].sort((a, b) => b.ratio - a.ratio);
+  const priorityTotals = budgetPriorityTotals(progress);
 
   return (
     <div className="space-y-6">
@@ -41,6 +43,20 @@ export default function BudgetsPage() {
             value={summary.overCount}
             tone={summary.overCount > 0 ? "negative" : "neutral"}
           />
+        </div>
+      </Card>
+
+      <Card>
+        <CardHeader title="Priority mix" subtitle="Monthly caps grouped by budget role" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {priorityTotals.map((item) => (
+            <MetricTile
+              key={item.priority}
+              label={item.priority}
+              value={formatCurrency(item.monthly)}
+              hint={`${formatCurrency(item.spent)} spent · ${item.count} categories`}
+            />
+          ))}
         </div>
       </Card>
 

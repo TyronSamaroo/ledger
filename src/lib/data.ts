@@ -76,15 +76,15 @@ export const categories: Category[] = [
 // ──────────────────────────────────────────────────────────────────────────────
 
 export const budgets: Budget[] = [
-  { categoryId: "cat_groceries", monthly: 600 },
-  { categoryId: "cat_dining", monthly: 300 },
-  { categoryId: "cat_transport", monthly: 220 },
-  { categoryId: "cat_rent", monthly: 1850 },
-  { categoryId: "cat_utilities", monthly: 180 },
-  { categoryId: "cat_entertain", monthly: 150 },
-  { categoryId: "cat_health", monthly: 120 },
-  { categoryId: "cat_shopping", monthly: 200 },
-  { categoryId: "cat_subs", monthly: 80 },
+  { categoryId: "cat_groceries", monthly: 600, priority: "watch", note: "Meal planning lever" },
+  { categoryId: "cat_dining", monthly: 300, priority: "flex", note: "Cut first if month tightens" },
+  { categoryId: "cat_transport", monthly: 220, priority: "watch", note: "Commute and rideshare mix" },
+  { categoryId: "cat_rent", monthly: 1850, priority: "fixed", note: "Fixed housing cost" },
+  { categoryId: "cat_utilities", monthly: 180, priority: "fixed", note: "Bill cluster" },
+  { categoryId: "cat_entertain", monthly: 150, priority: "flex", note: "Nice-to-have spend" },
+  { categoryId: "cat_health", monthly: 120, priority: "watch", note: "Pharmacy and fitness" },
+  { categoryId: "cat_shopping", monthly: 200, priority: "flex", note: "Delayable purchases" },
+  { categoryId: "cat_subs", monthly: 80, priority: "watch", note: "Recurring audit lane" },
 ];
 
 // ──────────────────────────────────────────────────────────────────────────────

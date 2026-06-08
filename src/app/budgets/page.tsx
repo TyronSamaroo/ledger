@@ -2,7 +2,6 @@ import { Card, CardHeader, Badge, MetricTile } from "@/components/Card";
 import { budgets, categories, transactions } from "@/lib/data";
 import {
   budgetProgress,
-  budgetStatus,
   budgetSummary,
   inMonth,
   latestMonth,
@@ -46,9 +45,8 @@ export default function BudgetsPage() {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {prioritized.map(({ category, budget, spent, ratio }) => {
+        {prioritized.map(({ category, budget, spent, ratio, status }) => {
           const pct = Math.round(ratio * 100);
-          const status = budgetStatus(ratio);
           const over = status === "over";
           const tone = over ? "negative" : status === "tight" ? "warning" : "positive";
           const label = over ? "Over" : status === "tight" ? "Tight" : "On track";

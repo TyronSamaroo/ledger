@@ -49,4 +49,6 @@ export interface Budget {
   categoryId: string;
   /** Monthly limit in USD. */
   monthly: number;
+  priority?: "fixed" | "flex" | "watch";
+  note?: string;
 }

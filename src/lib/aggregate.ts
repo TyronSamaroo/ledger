@@ -299,3 +299,22 @@ export function budgetSummary(progress: BudgetProgress[]): BudgetSummary {
     tightCount: progress.filter((p) => budgetStatus(p.ratio) === "tight").length,
   };
 }
+
+export function budgetPriorityTotals(progress: BudgetProgress[]): Array<{
+  priority: NonNullable<Budget["priority"]>;
+  monthly: number;
+  spent: number;
+  count: number;
+}> {
+  const buckets = new Map<NonNullable<Budget["priority"]>, { monthly: number; spent: number; count: number }>();
+  for (const item of progress) {
+    const priority = item.budget.priority ?? "watch";
+    const current = buckets.get(priority) ?? { monthly: 0, spent: 0, count: 0 };
+    current.monthly += item.budget.monthly;
+    current.spent += item.spent;
+    current.count += 1;
+    buckets.set(priority, current);
+  }
+
+  return [...buckets.entries()].map(([priority, values]) => ({ priority, ...values }));
+}

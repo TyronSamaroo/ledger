@@ -316,5 +316,13 @@ export function budgetPriorityTotals(progress: BudgetProgress[]): Array<{
     buckets.set(priority, current);
   }
 
-  return [...buckets.entries()].map(([priority, values]) => ({ priority, ...values }));
+  const priorityRank: Record<NonNullable<Budget["priority"]>, number> = {
+    fixed: 0,
+    watch: 1,
+    flex: 2,
+  };
+
+  return [...buckets.entries()]
+    .map(([priority, values]) => ({ priority, ...values }))
+    .sort((a, b) => priorityRank[a.priority] - priorityRank[b.priority]);
 }

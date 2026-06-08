@@ -6,6 +6,7 @@ import {
   cashFlowSummary,
   inMonth,
   latestMonth,
+  monthlyAverages,
   spendForecast,
   monthlyTotals,
   netWorth,
@@ -17,6 +18,7 @@ export default function DashboardPage() {
   const thisMonth = latestMonth(transactions);
   const monthTxns = inMonth(transactions, thisMonth);
   const monthly = monthlyTotals(transactions);
+  const averages = monthlyAverages(transactions);
   const cats = spendByCategory(monthTxns, categories);
   const cashFlow = cashFlowSummary(monthTxns);
   const forecast = spendForecast(monthTxns, thisMonth);
@@ -79,6 +81,26 @@ export default function DashboardPage() {
         <Card className="lg:col-span-2">
           <CardHeader title="Income vs spend" subtitle="Last 6 months" />
           <SpendingChart data={monthly} />
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="rounded-lg bg-elevated p-3">
+              <p className="text-muted">Avg income</p>
+              <p className="mt-1 text-sm font-medium text-text">
+                {formatCurrency(averages.income)}
+              </p>
+            </div>
+            <div className="rounded-lg bg-elevated p-3">
+              <p className="text-muted">Avg spend</p>
+              <p className="mt-1 text-sm font-medium text-text">
+                {formatCurrency(averages.spend)}
+              </p>
+            </div>
+            <div className="rounded-lg bg-elevated p-3">
+              <p className="text-muted">Avg net</p>
+              <p className="mt-1 text-sm font-medium text-text">
+                {formatCurrency(averages.net, true)}
+              </p>
+            </div>
+          </div>
         </Card>
         <Card>
           <CardHeader title="Top categories" subtitle={formatMonth(thisMonth)} />

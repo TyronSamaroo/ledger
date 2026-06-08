@@ -86,6 +86,30 @@ export function monthlyTotals(txns: Transaction[]): Array<{
     .map(([month, { income, spend }]) => ({ month, income, spend, net: income - spend }));
 }
 
+export interface MonthlyAverages {
+  income: number;
+  spend: number;
+  net: number;
+  savingsRate: number;
+  months: number;
+}
+
+export function monthlyAverages(txns: Transaction[]): MonthlyAverages {
+  const totals = monthlyTotals(txns);
+  const months = totals.length || 1;
+  const income = totals.reduce((sum, month) => sum + month.income, 0) / months;
+  const spend = totals.reduce((sum, month) => sum + month.spend, 0) / months;
+  const net = income - spend;
+
+  return {
+    income,
+    spend,
+    net,
+    savingsRate: income === 0 ? 0 : net / income,
+    months: totals.length,
+  };
+}
+
 /** Spend per expense category over a transaction set. */
 export function spendByCategory(
   txns: Transaction[],

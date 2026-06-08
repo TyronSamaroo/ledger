@@ -6,6 +6,7 @@ import {
   cashFlowSummary,
   inMonth,
   latestMonth,
+  spendForecast,
   monthlyTotals,
   netWorth,
   spendByCategory,
@@ -18,6 +19,7 @@ export default function DashboardPage() {
   const monthly = monthlyTotals(transactions);
   const cats = spendByCategory(monthTxns, categories);
   const cashFlow = cashFlowSummary(monthTxns);
+  const forecast = spendForecast(monthTxns, thisMonth);
 
   const nw = netWorth(accounts);
 
@@ -33,7 +35,7 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-semibold tracking-tight mt-1">Dashboard</h1>
       </header>
 
-      <section className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <section className="grid grid-cols-2 lg:grid-cols-6 gap-4">
         <StatCard
           label="Net worth"
           value={formatCurrencyCompact(nw)}
@@ -53,6 +55,12 @@ export default function DashboardPage() {
               : undefined
           }
           tone={spendTone}
+        />
+        <StatCard
+          label="Projected spend"
+          value={formatCurrency(forecast.projectedSpend)}
+          hint={`${forecast.elapsedDays}/${forecast.daysInMonth} days`}
+          tone={forecast.projectedSpend > cashFlow.income ? "negative" : "neutral"}
         />
         <StatCard
           label="Net (MTD)"

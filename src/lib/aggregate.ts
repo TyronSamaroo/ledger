@@ -242,6 +242,7 @@ export interface BudgetProgress {
   remaining: number;
   /** 0..1+ — values >1 mean over budget. */
   ratio: number;
+  status: BudgetStatus;
 }
 
 export type BudgetStatus = "on-track" | "tight" | "over";
@@ -271,6 +272,7 @@ export function budgetProgress(
         spent,
         remaining: Math.max(0, b.monthly - spent),
         ratio: b.monthly === 0 ? 0 : spent / b.monthly,
+        status: budgetStatus(b.monthly === 0 ? 0 : spent / b.monthly),
       } satisfies BudgetProgress;
     })
     .filter((b): b is BudgetProgress => b !== null);

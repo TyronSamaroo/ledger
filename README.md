@@ -64,6 +64,17 @@ src/
 
 No real merchant names, no real account numbers, no PII. All institutions and merchants are invented.
 
+## Derived metrics
+
+The dashboard deliberately keeps finance math in `src/lib/aggregate.ts` instead of embedding it in page components. Current helpers cover:
+
+- Account health: assets, debts, net worth, credit utilization, and monthly targets
+- Cash flow: income, spend, net, savings rate, monthly averages, and projected month-end spend
+- Budgets: category progress, overall utilization, remaining budget, and attention counts
+- Transactions: top merchants, pending counts, and largest monthly spend
+
+That split keeps the UI easy to replace while preserving a tested, portable data layer.
+
 ## Replacing the data layer
 
 The seed is just a TypeScript module exporting four arrays. To wire in a real backend:

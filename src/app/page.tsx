@@ -5,6 +5,7 @@ import { accounts, categories, transactions } from "@/lib/data";
 import {
   cashFlowSummary,
   inMonth,
+  latestMonthDelta,
   latestMonth,
   monthlyAverages,
   spendForecast,
@@ -22,6 +23,7 @@ export default function DashboardPage() {
   const cats = spendByCategory(monthTxns, categories);
   const cashFlow = cashFlowSummary(monthTxns);
   const forecast = spendForecast(monthTxns, thisMonth);
+  const delta = latestMonthDelta(transactions);
 
   const nw = netWorth(accounts);
 
@@ -46,6 +48,7 @@ export default function DashboardPage() {
         <StatCard
           label="Income (MTD)"
           value={formatCurrency(cashFlow.income)}
+          delta={delta ? `${formatCurrency(delta.income, true)} vs last month` : undefined}
           tone="positive"
         />
         <StatCard
@@ -67,6 +70,7 @@ export default function DashboardPage() {
         <StatCard
           label="Net (MTD)"
           value={formatCurrency(cashFlow.net, true)}
+          delta={delta ? `${formatCurrency(delta.net, true)} vs last month` : undefined}
           tone={cashFlow.net >= 0 ? "positive" : "negative"}
         />
         <StatCard

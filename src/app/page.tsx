@@ -4,6 +4,7 @@ import { TransactionsTable } from "@/components/TransactionsTable";
 import { accounts, categories, transactions } from "@/lib/data";
 import {
   cashFlowSummary,
+  forecastVariance,
   inMonth,
   latestMonthDelta,
   latestMonth,
@@ -23,6 +24,7 @@ export default function DashboardPage() {
   const cats = spendByCategory(monthTxns, categories);
   const cashFlow = cashFlowSummary(monthTxns);
   const forecast = spendForecast(monthTxns, thisMonth);
+  const forecastGap = forecastVariance(forecast, cashFlow.income);
   const delta = latestMonthDelta(transactions);
   const topCategoryTotal = cats.reduce((sum, item) => sum + item.amount, 0);
 
@@ -65,8 +67,8 @@ export default function DashboardPage() {
         <StatCard
           label="Projected spend"
           value={formatCurrency(forecast.projectedSpend)}
-          hint={`${forecast.elapsedDays}/${forecast.daysInMonth} days`}
-          tone={forecast.projectedSpend > cashFlow.income ? "negative" : "neutral"}
+          hint={`${formatCurrency(forecastGap, true)} vs income`}
+          tone={forecastGap < 0 ? "negative" : "neutral"}
         />
         <StatCard
           label="Net (MTD)"

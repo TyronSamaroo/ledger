@@ -1,4 +1,4 @@
-import { Card, CardHeader, StatCard } from "@/components/Card";
+import { Card, CardHeader, MetricTile, StatCard } from "@/components/Card";
 import { SpendingChart } from "@/components/SpendingChart";
 import { TransactionsTable } from "@/components/TransactionsTable";
 import { accounts, categories, transactions } from "@/lib/data";
@@ -82,24 +82,13 @@ export default function DashboardPage() {
           <CardHeader title="Income vs spend" subtitle="Last 6 months" />
           <SpendingChart data={monthly} />
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className="rounded-lg bg-elevated p-3">
-              <p className="text-muted">Avg income</p>
-              <p className="mt-1 text-sm font-medium text-text">
-                {formatCurrency(averages.income)}
-              </p>
-            </div>
-            <div className="rounded-lg bg-elevated p-3">
-              <p className="text-muted">Avg spend</p>
-              <p className="mt-1 text-sm font-medium text-text">
-                {formatCurrency(averages.spend)}
-              </p>
-            </div>
-            <div className="rounded-lg bg-elevated p-3">
-              <p className="text-muted">Avg net</p>
-              <p className="mt-1 text-sm font-medium text-text">
-                {formatCurrency(averages.net, true)}
-              </p>
-            </div>
+            <MetricTile label="Avg income" value={formatCurrency(averages.income)} />
+            <MetricTile label="Avg spend" value={formatCurrency(averages.spend)} />
+            <MetricTile
+              label="Avg net"
+              value={formatCurrency(averages.net, true)}
+              tone={averages.net >= 0 ? "positive" : "negative"}
+            />
           </div>
         </Card>
         <Card>

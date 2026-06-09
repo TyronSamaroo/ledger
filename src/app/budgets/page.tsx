@@ -1,4 +1,4 @@
-import { Card, CardHeader, Badge } from "@/components/Card";
+import { Card, CardHeader, Badge, MetricTile } from "@/components/Card";
 import { budgets, categories, transactions } from "@/lib/data";
 import {
   budgetProgress,
@@ -35,20 +35,13 @@ export default function BudgetsPage() {
           />
         </div>
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Remaining</p>
-            <p className="mt-1 text-sm font-medium text-text">
-              {formatCurrency(summary.totalRemaining)}
-            </p>
-          </div>
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Tight categories</p>
-            <p className="mt-1 text-sm font-medium text-text">{summary.tightCount}</p>
-          </div>
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Over budget</p>
-            <p className="mt-1 text-sm font-medium text-text">{summary.overCount}</p>
-          </div>
+          <MetricTile label="Remaining" value={formatCurrency(summary.totalRemaining)} />
+          <MetricTile label="Tight categories" value={summary.tightCount} />
+          <MetricTile
+            label="Over budget"
+            value={summary.overCount}
+            tone={summary.overCount > 0 ? "negative" : "neutral"}
+          />
         </div>
       </Card>
 

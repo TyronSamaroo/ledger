@@ -1,4 +1,4 @@
-import { Card, CardHeader } from "@/components/Card";
+import { Card, CardHeader, MetricTile } from "@/components/Card";
 import { TransactionsTable } from "@/components/TransactionsTable";
 import { accounts, categories, transactions } from "@/lib/data";
 import { inMonth, latestMonth, merchantTotals, transactionStats } from "@/lib/aggregate";
@@ -20,24 +20,10 @@ export default function TransactionsPage() {
       <Card>
         <CardHeader title="Top merchants" subtitle={formatMonth(month)} />
         <div className="mb-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Spend txns</p>
-            <p className="mt-1 text-sm font-medium text-text">{stats.spendCount}</p>
-          </div>
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Income txns</p>
-            <p className="mt-1 text-sm font-medium text-text">{stats.incomeCount}</p>
-          </div>
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Pending</p>
-            <p className="mt-1 text-sm font-medium text-text">{stats.pendingCount}</p>
-          </div>
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Largest spend</p>
-            <p className="mt-1 text-sm font-medium text-text">
-              {formatCurrency(stats.largestSpend)}
-            </p>
-          </div>
+          <MetricTile label="Spend txns" value={stats.spendCount} />
+          <MetricTile label="Income txns" value={stats.incomeCount} />
+          <MetricTile label="Pending" value={stats.pendingCount} />
+          <MetricTile label="Largest spend" value={formatCurrency(stats.largestSpend)} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
           {merchants.map((merchant) => (

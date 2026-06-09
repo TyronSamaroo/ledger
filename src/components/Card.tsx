@@ -82,3 +82,25 @@ export function Badge({
     </span>
   );
 }
+
+export function MetricTile({
+  label,
+  value,
+  hint,
+  tone = "neutral",
+}: {
+  label: string;
+  value: ReactNode;
+  hint?: ReactNode;
+  tone?: "neutral" | "positive" | "negative";
+}) {
+  const valueColor =
+    tone === "positive" ? "text-positive" : tone === "negative" ? "text-negative" : "text-text";
+  return (
+    <div className="rounded-lg bg-elevated p-3">
+      <p className="text-xs text-muted">{label}</p>
+      <p className={`mt-1 text-sm font-medium ${valueColor}`}>{value}</p>
+      {hint && <p className="mt-1 text-[11px] text-muted">{hint}</p>}
+    </div>
+  );
+}

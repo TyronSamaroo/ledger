@@ -1,4 +1,4 @@
-import { Card, CardHeader, Badge } from "@/components/Card";
+import { Card, CardHeader, Badge, MetricTile } from "@/components/Card";
 import { accounts } from "@/lib/data";
 import { accountSummary } from "@/lib/aggregate";
 import { formatCurrency, formatCurrencyCompact, formatPercent } from "@/lib/format";
@@ -46,18 +46,12 @@ export default function AccountsPage() {
           </span>
         </div>
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Credit utilization</p>
-            <p className="mt-1 text-sm font-medium text-text">
-              {formatPercent(summary.creditUtilization)}
-            </p>
-          </div>
-          <div className="rounded-lg bg-elevated p-3">
-            <p className="text-muted">Monthly targets</p>
-            <p className="mt-1 text-sm font-medium text-text">
-              {formatCurrency(summary.monthlyTargets)}
-            </p>
-          </div>
+          <MetricTile
+            label="Credit utilization"
+            value={formatPercent(summary.creditUtilization)}
+            tone={summary.creditUtilization > 0.3 ? "negative" : "neutral"}
+          />
+          <MetricTile label="Monthly targets" value={formatCurrency(summary.monthlyTargets)} />
         </div>
       </Card>
 

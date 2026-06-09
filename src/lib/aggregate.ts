@@ -223,6 +223,24 @@ export function spendForecast(txns: Transaction[], key: string): SpendForecast {
   };
 }
 
+export interface MonthDelta {
+  income: number;
+  spend: number;
+  net: number;
+}
+
+export function latestMonthDelta(txns: Transaction[]): MonthDelta | null {
+  const totals = monthlyTotals(txns);
+  if (totals.length < 2) return null;
+  const current = totals[totals.length - 1];
+  const previous = totals[totals.length - 2];
+  return {
+    income: current.income - previous.income,
+    spend: current.spend - previous.spend,
+    net: current.net - previous.net,
+  };
+}
+
 /** Filter to a specific YYYY-MM. */
 export function inMonth(txns: Transaction[], key: string): Transaction[] {
   return txns.filter((t) => monthKey(t.date) === key);

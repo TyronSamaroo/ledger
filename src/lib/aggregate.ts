@@ -223,6 +223,10 @@ export function spendForecast(txns: Transaction[], key: string): SpendForecast {
   };
 }
 
+export function forecastVariance(forecast: SpendForecast, target: number): number {
+  return target - forecast.projectedSpend;
+}
+
 export interface MonthDelta {
   income: number;
   spend: number;

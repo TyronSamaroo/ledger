@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const cashFlow = cashFlowSummary(monthTxns);
   const forecast = spendForecast(monthTxns, thisMonth);
   const delta = latestMonthDelta(transactions);
+  const topCategoryTotal = cats.reduce((sum, item) => sum + item.amount, 0);
 
   const nw = netWorth(accounts);
 
@@ -113,6 +114,11 @@ export default function DashboardPage() {
                     </span>
                     <span className="text-muted tabular-nums">
                       {formatCurrency(amount)}
+                      {topCategoryTotal > 0 && (
+                        <span className="ml-1">
+                          {formatPercent(amount / topCategoryTotal)}
+                        </span>
+                      )}
                     </span>
                   </div>
                   <div className="h-1.5 rounded-full bg-elevated overflow-hidden">
